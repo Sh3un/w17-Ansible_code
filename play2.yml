@@ -1,0 +1,24 @@
+---
+- hosts: db
+  become: true
+  ignore_errors: true
+  gather_facts: 1
+  tasks:
+    - name: Check the number of cpu
+      command: uptime
+      register: output
+
+    - name: Display the output
+      debug:
+        var: output.stdout
+
+    - name: create a file
+      file:
+        path: /home/ec2-user/week3
+        state: touch
+        mode: '0644'
+      register: file_output
+
+    - name: display output
+      debug:
+        var: file_output.diff.path
